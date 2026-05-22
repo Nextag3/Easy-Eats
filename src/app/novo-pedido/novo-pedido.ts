@@ -230,6 +230,7 @@ export class NovoPedido {
     console.log('Pedido:', this.carrinho);
     this.carrinho = [];
     this.cliente = '';
+    this.acessarRota('/confirmar-pedido');
 
   }
   modalAberto = false;
