@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Navbar } from '../../components/navbar';
 
@@ -13,13 +15,18 @@ interface Pedido {
 
 @Component({
   selector: 'app-historico-vendas',
+  standalone: true,
   templateUrl: './historico-vendas.html',
   styleUrls: ['./historico-vendas.scss'],
-  imports: [Navbar],
+  imports: [CommonModule, FormsModule, Navbar],
 })
 export class HistoricoVendasComponent {
   private router = inject(Router);
-  filtroSelecionado: 'todos' | 'aguardando' | 'preparando' | 'pronto' = 'todos';
+
+  busca = '';
+
+  filtros = ['Todos', 'Aguardando', 'Preparando', 'Pronto'];
+  filtroSelecionado = 'Todos';
 
   pedidos: Pedido[] = [
     {
@@ -47,36 +54,39 @@ export class HistoricoVendasComponent {
     },
   ];
 
-  filtroStatus: string = 'todos';
-  busca: string = '';
-
-  get pedidosFiltrados(): Pedido[] {
-    return this.pedidos
-      .filter((p) => {
-        if (this.filtroStatus === 'todos') return true;
-        return p.status === this.filtroStatus;
-      })
-      .filter((p) => {
-        const termo = this.busca.toLowerCase();
-        return p.cliente.toLowerCase().includes(termo) || p.id.toString().includes(termo);
-      })
-      .sort((a, b) => b.id - a.id);
-  }
-
-  get totalFiltrado(): number {
-    return this.pedidosFiltrados.reduce((sum, p) => sum + p.total, 0);
-  }
-
-  get totalPedidos(): number {
-    return this.pedidosFiltrados.length;
-  }
-
-  mudarFiltro(status: string) {
-    this.filtroStatus = status;
-  }
-
-  selecionarFiltro(filtro: any) {
+  selecionarFiltro(filtro: string) {
     this.filtroSelecionado = filtro;
+  }
+
+  get pedidosFiltrados() {
+    return this.pedidos
+      .filter((pedido) => {
+        if (this.filtroSelecionado === 'Todos') return true;
+
+        return (
+          pedido.status.toLowerCase() ===
+          this.filtroSelecionado.toLowerCase()
+        );
+      })
+      .filter((pedido) => {
+        const termo = this.busca.toLowerCase();
+
+        return (
+          pedido.cliente.toLowerCase().includes(termo) ||
+          pedido.id.toString().includes(termo)
+        );
+      });
+  }
+
+  get totalFiltrado() {
+    return this.pedidosFiltrados.reduce(
+      (total, pedido) => total + pedido.total,
+      0
+    );
+  }
+
+  get totalPedidos() {
+    return this.pedidosFiltrados.length;
   }
 
   protected acessarRota(rota: string) {

@@ -1,11 +1,14 @@
 <div class="container-padrao">
   <h2 class="titulo-padrao">Histórico de Vendas</h2>
+
   <div class="cards">
     <div class="card kpi">
       <div class="icon">$</div>
       <div>
         <span class="valor">Valor total</span>
-        <small class="valor-numero">R$ 178.00</small>
+        <small class="valor-numero">
+          R$ {{ totalFiltrado.toFixed(2) }}
+        </small>
       </div>
     </div>
 
@@ -13,69 +16,55 @@
       <div class="icon">🧾</div>
       <div>
         <span class="valor">Pedidos</span>
-        <small class="valor-numero">3</small>
+        <small class="valor-numero">
+          {{ totalPedidos }}
+        </small>
       </div>
     </div>
   </div>
 
-  <input type="text" placeholder="Buscar por nome ou #pedido" class="input-busca" />
+  <input
+    type="text"
+    placeholder="Buscar por nome ou #pedido"
+    class="input-busca"
+    [(ngModel)]="busca"
+  />
 
   <div class="filtros">
-    <button [class.ativo]="filtroSelecionado === 'todos'" (click)="selecionarFiltro('todos')">
-      Todos
-    </button>
-    <button
-      [class.ativo]="filtroSelecionado === 'aguardando'"
-      (click)="selecionarFiltro('aguardando')"
-    >
-      Aguardando
-    </button>
-    <button
-      [class.ativo]="filtroSelecionado === 'preparando'"
-      (click)="selecionarFiltro('preparando')"
-    >
-      Preparando
-    </button>
-    <button [class.ativo]="filtroSelecionado === 'pronto'" (click)="selecionarFiltro('pronto')">
-      Pronto
-    </button>
+    @for (filtro of filtros; track filtro) {
+      <button
+        [class.ativo]="filtroSelecionado === filtro"
+        (click)="selecionarFiltro(filtro)"
+      >
+        {{ filtro }}
+      </button>
+    }
   </div>
 
   <div class="lista">
-    <div class="card pedido">
-      <div class="top">
-        <strong>#001 João</strong>
-        <span class="status preparando">Preparando</span>
-      </div>
+    @for (pedido of pedidosFiltrados; track pedido.id) {
+      <div class="card pedido">
+        <div class="top">
+          <strong>#{{ pedido.id }} {{ pedido.cliente }}</strong>
+          <span class="status {{ pedido.status }}">
+            {{ pedido.status }}
+          </span>
+        </div>
 
-      <div class="itens">
-        <p>🍔 Hambúrguer Clássico x2</p>
-        <p>🍟 Batata Frita x1</p>
-        <p>🥤 Coca-Cola x2</p>
-      </div>
+        <div class="itens">
+          @for (item of pedido.itens; track $index) {
+            <p>{{ item.nome }} x{{ item.quantidade }}</p>
+          }
+        </div>
 
-      <div class="footer">
-        <span>02:21</span>
-        <strong class="valor-pedido">R$ 70.00</strong>
+        <div class="footer">
+          <span>{{ pedido.horario }}</span>
+          <strong class="valor-pedido">
+            R$ {{ pedido.total.toFixed(2) }}
+          </strong>
+        </div>
       </div>
-    </div>
-
-    <div class="card pedido">
-      <div class="top">
-        <strong>#002 Maria</strong>
-        <span class="status aguardando">Aguardando</span>
-      </div>
-
-      <div class="itens">
-        <p>🍔 X-Bacon x1</p>
-        <p>🧅 Onion Rings x1</p>
-      </div>
-
-      <div class="footer">
-        <span>02:21</span>
-        <strong class="valor-pedido">R$ 42.00</strong>
-      </div>
-    </div>
+    }
 
     <app-navbar></app-navbar>
   </div>
