@@ -3,9 +3,12 @@
 
 :host {
   display: flex;
-  min-height: calc(100vh - 70px);
+  min-height: calc(130vh - 70px);
   width: 100%;
   box-sizing: border-box;
+  padding-bottom: 120px;
+  padding-top: 20px;
+  background-image: url('../../assets/images/background-easy-eats.png');
 }
 
 .container-padrao {
@@ -13,6 +16,8 @@
   padding: 30px 15px;
   max-width: 1200px;
   margin: 0 auto;
+  
+ 
 }
 
 .wrapper {

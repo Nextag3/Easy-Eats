@@ -27,7 +27,19 @@
 
   font-size: 12px;
   cursor: pointer;
+
+  
 }
+
+.bottom-nav button.active {
+  color: #e67e22;
+}
+
+.bottom-nav button.active i,
+.bottom-nav button.active span {
+  color: #e67e22;
+}
+
 
 .bottom-nav button:hover {
   color: #e67e22;

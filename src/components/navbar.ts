@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.scss'],
 })
 export class Navbar {
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   acessarRota(rota: string): void {
     this.router.navigate([rota]);
