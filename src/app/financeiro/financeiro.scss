@@ -1,75 +1,30 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+
 :host {
   display: block;
-  background-color: #fcfcfc; 
-  min-height: 100vh;
-  padding: 40px 20px;
-  padding-bottom: 100px;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: Inter, 'Poppins', sans-serif;
 }
 
 .page-container {
-  max-width: 800px;
-  margin: 0 auto;
+  padding: 24px 28px 60px;
+  box-sizing: border-box;
 }
 
-/* ========================= */
-/* HEADER & BUTTONS */
-/* ========================= */
-/* ========================= */
-/* HEADER & BUTTONS */
-/* ========================= */
-.header-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
+.topo {
+  margin-bottom: 24px;
+}
 
-  .title-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+.topo h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+}
 
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0;
-    border-left: 5px solid #ff8c00;
-    padding-left: 15px;
-  }
-
-  .btn-voltar {
-    background: white;
-    border: 1px solid #ffdec2;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #ff8c00;
-    font-weight: 600;
-    transition: 0.3s;
-
-    &:hover {
-      background: #fff5eb;
-      border-color: #ff8c00;
-    }
-  }
-
-  .btn-primary {
-    background: #ff8c00;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
-    font-weight: 600;
-    transition: 0.3s;
-    font-size: 14px;
-
-    &:hover {
-      background: #e67e00;
-    }
-  }
+.topo p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14.5px;
 }
 
 /* ========================= */
@@ -82,8 +37,8 @@
 
   button {
     padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid #ffdec2;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
     background: white;
     cursor: pointer;
     font-weight: 600;
@@ -95,9 +50,9 @@
     }
 
     &.ativo {
-      background: #ff8c00;
+      background: #ea580c;
       color: white;
-      border-color: #ff8c00;
+      border-color: #ea580c;
     }
   }
 }
@@ -106,7 +61,7 @@
   display: flex;
   margin: 25px 0;
   background: #fff5eb;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 6px;
 
   span {
@@ -121,8 +76,8 @@
 
     &.ativo {
       background: white;
-      color: #ff8c00;
-      box-shadow: 0 2px 8px rgba(255, 140, 0, 0.1);
+      color: #ea580c;
+      box-shadow: none;
     }
   }
 }
@@ -138,11 +93,11 @@
 
   .summary-card {
     background: white;
-    border: 1px solid #ffdec2;
-    border-radius: 16px;
-    padding: 20px 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.03);
+    box-shadow: none;
 
     .valor {
       font-size: 24px;
@@ -150,7 +105,7 @@
       color: #1a1a1a;
       margin-bottom: 5px;
 
-      &.warning { color: #ff8c00; }
+      &.warning { color: #ea580c; }
       &.text-success { color: #2e7d32; }
       &.text-error { color: #c62828; }
     }
@@ -170,10 +125,10 @@
 /* ========================= */
 .card-form {
   background: white;
-  border: 1px solid #ffdec2;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(255, 140, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: none;
 
   &.mb-25 {
     margin-bottom: 25px;
@@ -254,7 +209,7 @@
 
   &.warning-bg {
     background-color: #fff5eb;
-    color: #ff8c00;
+    color: #ea580c;
   }
 }
 
@@ -266,14 +221,14 @@
   margin-bottom: 20px;
   padding: 14px;
   border-radius: 8px;
-  border: 1px solid #ffdec2;
+  border: 1px solid #e5e7eb;
   font-size: 14px;
   box-sizing: border-box;
   outline: none;
   transition: 0.2s;
 
   &:focus {
-    border-color: #ff8c00;
+    border-color: #ea580c;
     box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
   }
 }
@@ -286,14 +241,14 @@
 
 .produto-card {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 16px;
+  border-radius: 8px;
   border: 1px solid #f0f0f0;
   transition: 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  box-shadow: none;
 
   &.alerta {
-    border: 1px solid #ffdec2;
+    border: 1px solid #e5e7eb;
     background: #fffdfa;
   }
 
@@ -302,19 +257,33 @@
     justify-content: space-between;
     align-items: center;
 
-    .emoji {
-      font-size: 24px;
+    .icone-produto {
+      width: 38px;
+      height: 38px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff7ed;
+      color: #ea580c;
+      font-size: 17px;
     }
 
-    .actions span {
-      margin-left: 10px;
+    .actions button {
+      margin-left: 6px;
       cursor: pointer;
-      font-size: 16px;
-      opacity: 0.7;
+      font-size: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #6b7280;
       transition: 0.2s;
 
       &:hover {
-        opacity: 1;
+        background: #f8f5f2;
+        color: #111827;
       }
     }
   }
@@ -333,7 +302,7 @@
   .preco {
     margin-top: 12px;
     font-weight: 800;
-    color: #ff8c00;
+    color: #ea580c;
     font-size: 16px;
   }
 

@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { StatusPedidoEnum } from '../enum/pedidosEnum';
-import { Navbar } from '../../components/navbar';
 
 interface Pedido {
   id: string;
@@ -13,12 +11,12 @@ interface Pedido {
 
 @Component({
   selector: 'app-fila',
+  standalone: true,
   templateUrl: './component.fila.html',
   styleUrls: ['./component.fila.scss'],
-  imports: [Navbar],
+  imports: [],
 })
 export class ComponentFila {
-  private router = inject(Router);
   public readonly statusEnum = StatusPedidoEnum;
 
   public activeOrders: Pedido[] = [
@@ -47,6 +45,14 @@ export class ComponentFila {
 
   public readyOrders: Pedido[] = [];
 
+  get totalAguardando(): number {
+    return this.activeOrders.filter((p) => p.status === StatusPedidoEnum.AGUARDANDO).length;
+  }
+
+  get totalPreparando(): number {
+    return this.activeOrders.filter((p) => p.status === StatusPedidoEnum.PREPARANDO).length;
+  }
+
   mudarStatus(id: string, novoStatus: StatusPedidoEnum) {
     const index = this.activeOrders.findIndex((p) => p.id === id);
 
@@ -59,9 +65,5 @@ export class ComponentFila {
         this.readyOrders.push(pedidoPronto);
       }
     }
-  }
-
-  protected acessarRota(rota: string) {
-    this.router.navigate([rota]);
   }
 }

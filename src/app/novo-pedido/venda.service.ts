@@ -1,0 +1,60 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { Produto } from '../cadastro-produto/produto.service';
+
+export const STATUS_PEDIDO = {
+  AGUARDANDO: 'Aguardando',
+  PREPARANDO: 'Preparando',
+  PRONTO: 'Pronto',
+  ENTREGUE: 'Entregue',
+} as const;
+
+export type StatusPedido = (typeof STATUS_PEDIDO)[keyof typeof STATUS_PEDIDO];
+
+export interface ItemVendaResumo {
+  id: number;
+  quantidade: number;
+  preco_unitario: number;
+  valor_total: number | null;
+  produto: Produto;
+}
+
+export interface Venda {
+  id: number;
+  status: string;
+  tipo: string;
+  origem: string | null;
+  mesa: { id: number; numero: number } | null;
+  nomeCliente: string | null;
+  usuario: { id: number; nome: string } | null;
+  itens: ItemVendaResumo[] | null;
+}
+
+export interface VendaPayload {
+  status: string;
+  tipo: string;
+  mesa: { id: number } | null;
+  nomeCliente: string | null;
+  usuario: { id: number };
+}
+
+const API_URL = `${environment.apiUrl}/venda`;
+
+@Injectable({ providedIn: 'root' })
+export class VendaService {
+  constructor(private http: HttpClient) {}
+
+  listar(): Observable<Venda[]> {
+    return this.http.get<Venda[]>(API_URL);
+  }
+
+  criar(venda: VendaPayload): Observable<Venda> {
+    return this.http.post<Venda>(API_URL, venda);
+  }
+
+  atualizarStatus(id: number, status: string, tipo: string, usuarioId: number): Observable<Venda> {
+    return this.http.put<Venda>(`${API_URL}/${id}`, { status, tipo, usuario: { id: usuarioId } });
+  }
+}

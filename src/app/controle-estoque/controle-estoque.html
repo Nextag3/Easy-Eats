@@ -1,84 +1,75 @@
-<div class="page-container">
-  <div class="header-section">
-    <h1>Estoque e Histórico</h1>
-    <button class="btn-voltar" (click)="acessarRota('/perfil-admin')">Voltar</button>
+<div class="pagina">
+  <header class="topo">
+    <h1>Controle de Estoque</h1>
+    <p>Itens do estoque e últimas movimentações</p>
+  </header>
+
+  <div class="grid-resumo">
+    <div class="resumo-card">
+      <div class="resumo-valor">{{ produtos.length }}</div>
+      <div class="resumo-label">Total de Itens</div>
+    </div>
+
+    <div class="resumo-card">
+      <div class="resumo-valor alerta">{{ estoqueBaixo.length }}</div>
+      <div class="resumo-label">Estoque Baixo</div>
+    </div>
+
+    <div class="resumo-card">
+      <div class="resumo-valor">{{ movimentacoes.length }}</div>
+      <div class="resumo-label">Movimentações</div>
+    </div>
   </div>
 
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="valor">{{ produtos.length }}</div>
-      <div class="paragrafo">Total de Itens</div>
-    </div>
+  <section class="painel">
+    <h3>Estoque Atual</h3>
 
-    <div class="summary-card">
-      <div class="valor warning">{{ estoqueBaixo.length }}</div>
-      <div class="paragrafo">Estoque Baixo</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="valor">{{ movimentacoes.length }}</div>
-      <div class="paragrafo">Movimentações</div>
-    </div>
-  </div>
-
-  <div class="card-form mb-25">
-    <div class="list-header">
-      <h3>Estoque Atual</h3>
-    </div>
-
-    <div class="list-container">
+    <div class="lista">
       @for (produto of produtos; track produto.id) {
-        <div class="list-item">
-          <span class="item-name">
-            <span class="emoji">{{ produto.emoji }}</span> {{ produto.nome }}
+        <div class="linha">
+          <span class="nome">
+            <i class="bi" [ngClass]="iconeCategoria(produto.categoria)"></i>
+            {{ produto.nome }}
           </span>
-          
-          @if (produto.quantidade < produto.quantidadeMinima) {
-            <span class="item-info">
-              {{ produto.quantidade }} {{ produto.unidade }} 
-              <span class="status-badge error">Baixo</span>
-            </span>
-          }
-          
-          @if (produto.quantidade >= produto.quantidadeMinima) {
-            <span class="item-info">
-              {{ produto.quantidade }} {{ produto.unidade }} 
-              <span class="status-badge success">Ok</span>
-            </span>
-          }
+
+          <span class="info">
+            {{ produto.quantidade }} {{ produto.unidade }}
+
+            @if (produto.quantidade < produto.quantidadeMinima) {
+              <span class="badge erro">Baixo</span>
+            } @else {
+              <span class="badge sucesso">Ok</span>
+            }
+          </span>
         </div>
       }
     </div>
-  </div>
+  </section>
 
-  <div class="card-form">
-    <div class="list-header">
-      <h3>Últimas Movimentações</h3>
-    </div>
+  <section class="painel">
+    <h3>Últimas Movimentações</h3>
 
-    <div class="list-container">
+    <div class="lista">
       @for (mov of movimentacoes; track mov.id) {
-        <div class="list-item">
-          <span class="item-name">
-            <span class="emoji">{{ mov.tipo === 'entrada' ? '📦' : '📤' }}</span> {{ mov.nomeProduto }}
+        <div class="linha">
+          <span class="nome">
+            <i class="bi" [ngClass]="mov.tipo === 'entrada' ? 'bi-box-arrow-in-down' : 'bi-box-arrow-up'"></i>
+            {{ mov.nomeProduto }}
           </span>
-          
-          @if (mov.tipo === 'entrada') {
-            <span class="item-info">
-              +{{ mov.quantidade }} 
-              <span class="status-badge success">Entrada</span>
-            </span>
-          }
 
-          @if (mov.tipo === 'saida') {
-            <span class="item-info">
-              -{{ mov.quantidade }} 
-              <span class="status-badge warning-bg">Saída</span>
+          @if (mov.tipo === 'entrada') {
+            <span class="info">
+              +{{ mov.quantidade }}
+              <span class="badge sucesso">Entrada</span>
+            </span>
+          } @else {
+            <span class="info">
+              -{{ mov.quantidade }}
+              <span class="badge alerta-fundo">Saída</span>
             </span>
           }
         </div>
       }
     </div>
-  </div>
+  </section>
 </div>
-

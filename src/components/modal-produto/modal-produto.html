@@ -7,14 +7,14 @@
       </button>
 
       <div class="modal-header">
-        <div class="emoji-grande">{{ produto.emoji }}</div>
+        <div class="icone-grande"><i class="bi" [ngClass]="iconeProduto"></i></div>
         <h3>{{ produto.nome }}</h3>
         <span class="preco-destaque">R$ {{ produto.preco.toFixed(2) }}</span>
       </div>
 
       <div class="modal-body">
         <p class="descricao">
-          Delicioso lanche feito com ingredientes frescos. Personalize como quiser!
+          {{ produto.descricao }}
         </p>
       </div>
 

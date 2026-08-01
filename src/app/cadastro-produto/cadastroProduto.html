@@ -1,8 +1,8 @@
-<div class="page-container">
-  <div class="header-section">
+<div class="pagina">
+  <header class="topo">
     <h1>Novo Produto</h1>
-    <button class="btn-voltar" (click)="acessarRota('/perfil-admin')">Voltar</button>
-  </div>
+    <p>Cadastre um novo item no catálogo</p>
+  </header>
 
   <div class="card-form">
     <form [formGroup]="form" (ngSubmit)="abrirModalConfirmacao()">
@@ -40,7 +40,7 @@
     <app-modal-cadastro-produto
       [produto]="produtoParaConfirmar"
       (fechar)="fecharModal()"
-      (confirmar)="finalizarCadastro($event)">
+      (cadastrar)="finalizarCadastro($event)">
     </app-modal-cadastro-produto>
   }
 </div>

@@ -5,13 +5,8 @@
 :host {
   display: block;
   min-height: 100vh;
-  padding: 20px;
-  padding-bottom: 120px;
-
-  background-image: url('../../assets/images/background-easy-eats.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  padding: 24px 28px 60px;
+  box-sizing: border-box;
 }
 $bg-color: #fcfcfc;
 $card-bg: #ffffff;
@@ -24,15 +19,6 @@ $danger-red: #ef4444;
 .container {
   width: 100%;
   max-width: 700px;
-  min-height: calc(100vh - 140px);
-
-  padding: 30px;
-
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-
-  box-sizing: border-box;
 
   display: flex;
   justify-content: center;
@@ -54,10 +40,10 @@ $danger-red: #ef4444;
 .profile-card {
   background: $card-bg;
   border: 1px solid $border-light;
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 8px;
+  padding: 18px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 // Cabeçalho com Logo
@@ -142,7 +128,7 @@ $danger-red: #ef4444;
   border: 1px solid #fee2e2;
   color: $danger-red;
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 7px;
   cursor: pointer;
   margin-top: 10px;
 
@@ -152,47 +138,12 @@ $danger-red: #ef4444;
   }
 }
 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border-top: 1px solid #dee2e6;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 8px 0;
-    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
-    z-index: 1030;
-  }
-
-  .bottom-nav button {
-    background: none;
-    border: none;
-    color: #444;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  .bottom-nav button:hover {
-    color: #e67e22;
-  }
-
-  .bottom-nav i {
-    font-size: 20px;
-    margin-bottom: 2px;
-  }
-
-  .input-edicao-discreto {
+.input-edicao-discreto {
   width: 100%;
   padding: 12px 15px;       // Espaçamento interno do balão
   background-color: #f8fafc; // Fundo cinza clarinho igual ao seu print
   border: 1px solid #e2e8f0; // Borda completa do balão
-  border-radius: 10px;      // Arredondamento do balão
+  border-radius: 7px;      // Arredondamento do balão
   font-size: 14px;
   font-weight: 500;
   color: $text-dark;
@@ -200,15 +151,15 @@ $danger-red: #ef4444;
   transition: all 0.2s ease;
 
   &:focus {
-    border-color: #ff6b00;  // Laranja no foco
+    border-color: #ea580c;  // Laranja no foco
     background-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+    box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.12);
   }
 }
 
 // Pequeno ajuste para a canetinha não ficar desalinhada com os balões
 .btn-canetinha-corpo {
-  color: #ff6b00;
+  color: #ea580c;
   background: none;
   border: none;
   cursor: pointer;

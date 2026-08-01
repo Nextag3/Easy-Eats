@@ -1,7 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 interface Produto {
   id: number;
@@ -10,8 +9,12 @@ interface Produto {
   unidade: string;
   preco: number;
   estoque: number;
-  emoji: string;
 }
+
+const ICONE_POR_CATEGORIA: Record<string, string> = {
+  Lanches: 'bi-egg-fried',
+  Bebidas: 'bi-cup-straw',
+};
 
 @Component({
   selector: 'app-financeiro',
@@ -20,8 +23,6 @@ interface Produto {
   styleUrls: ['./financeiro.scss']
 })
 export class Financeiro implements OnInit {
-  private router = inject(Router);
-
   abaSelecionada: 'resumo' | 'vendas' | 'despesas' | 'produtos' = 'resumo';
   filtroSelecionado: 'hoje' | 'semana' | 'periodo' = 'hoje';
 
@@ -30,21 +31,26 @@ export class Financeiro implements OnInit {
 
   vendas = 178;
   despesas = 405;
-  lucro = -227;
 
-  resumo = {
-    pedidos: 3,
-    ticketMedio: 59.33,
-    despesasRegistradas: 3,
-    resultado: -227
-  };
+  get lucro(): number {
+    return this.vendas - this.despesas;
+  }
+
+  get resumo() {
+    return {
+      pedidos: 3,
+      ticketMedio: 59.33,
+      despesasRegistradas: 3,
+      resultado: this.lucro,
+    };
+  }
 
   produtos: Produto[] = [
-    { id: 1, nome: 'Hot Dog', categoria: 'Lanches', unidade: 'unidade', preco: 15, estoque: 10, emoji: '🌭' },
-    { id: 2, nome: 'Guaraná', categoria: 'Bebidas', unidade: 'unidade', preco: 7, estoque: 3, emoji: '🥤' },
-    { id: 3, nome: 'Hambúrguer Clássico', categoria: 'Lanches', unidade: 'unidade', preco: 22, estoque: 8, emoji: '🍔' },
-    { id: 4, nome: 'Coca-Cola', categoria: 'Bebidas', unidade: 'unidade', preco: 7, estoque: 6, emoji: '🥤' },
-    { id: 5, nome: 'Batata Frita', categoria: 'Lanches', unidade: 'porção', preco: 12, estoque: 2, emoji: '🍟' }
+    { id: 1, nome: 'Hot Dog', categoria: 'Lanches', unidade: 'unidade', preco: 15, estoque: 10 },
+    { id: 2, nome: 'Guaraná', categoria: 'Bebidas', unidade: 'unidade', preco: 7, estoque: 3 },
+    { id: 3, nome: 'Hambúrguer Clássico', categoria: 'Lanches', unidade: 'unidade', preco: 22, estoque: 8 },
+    { id: 4, nome: 'Coca-Cola', categoria: 'Bebidas', unidade: 'unidade', preco: 7, estoque: 6 },
+    { id: 5, nome: 'Batata Frita', categoria: 'Lanches', unidade: 'porção', preco: 12, estoque: 2 },
   ];
 
   produtosFiltrados: Produto[] = [];
@@ -77,6 +83,10 @@ export class Financeiro implements OnInit {
     return p.estoque < this.estoqueMinimo;
   }
 
+  iconeCategoria(categoria: string): string {
+    return ICONE_POR_CATEGORIA[categoria] ?? 'bi-box-seam';
+  }
+
   novoProduto() {
     console.log('Novo produto');
   }
@@ -90,8 +100,5 @@ export class Financeiro implements OnInit {
       this.produtos = this.produtos.filter(x => x.id !== p.id);
       this.filtrarProdutos();
     }
-  }
-  protected acessarRota(rota: string) {
-    this.router.navigate([rota]);
   }
 }

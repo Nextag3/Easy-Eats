@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Navbar } from '../../components/navbar';
 
 interface Pedido {
   id: number;
@@ -18,11 +16,9 @@ interface Pedido {
   standalone: true,
   templateUrl: './historico-vendas.html',
   styleUrls: ['./historico-vendas.scss'],
-  imports: [CommonModule, FormsModule, Navbar],
+  imports: [CommonModule, FormsModule],
 })
 export class HistoricoVendasComponent {
-  private router = inject(Router);
-
   busca = '';
 
   filtros = ['Todos', 'Aguardando', 'Preparando', 'Pronto'];
@@ -87,9 +83,5 @@ export class HistoricoVendasComponent {
 
   get totalPedidos() {
     return this.pedidosFiltrados.length;
-  }
-
-  protected acessarRota(rota: string) {
-    this.router.navigate([rota]);
   }
 }

@@ -1,212 +1,102 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Navbar } from '../../components/navbar';
-import { ModalProdutoComponent } from "../../components/modal-produto/modalProduto";
+import { forkJoin } from 'rxjs';
+import { ModalProdutoComponent } from '../../components/modal-produto/modalProduto';
+import { AuthService } from '../auth/auth.service';
+import { Produto, ProdutoService } from '../cadastro-produto/produto.service';
+import { Mesa, MesaService } from '../mesas/mesa.service';
+import { ItemVendaService } from './item-venda.service';
+import { STATUS_PEDIDO, VendaService } from './venda.service';
+
+const ICONE_POR_CATEGORIA: Record<string, string> = {
+  Lanches: 'bi-egg-fried',
+  Acompanhamentos: 'bi-basket3',
+  Bebidas: 'bi-cup-straw',
+};
+
+interface ItemCarrinho {
+  produto: Produto;
+  qtd: number;
+}
 
 @Component({
   selector: 'app-novo-pedido',
   standalone: true,
-  imports: [CommonModule, FormsModule, Navbar, ModalProdutoComponent],
+  imports: [CommonModule, FormsModule, ModalProdutoComponent],
   templateUrl: './novo-pedido.html',
   styleUrls: ['./novo-pedido.scss'],
 })
-export class NovoPedido {
-  cliente = '';
-  private router = inject(Router);
+export class NovoPedido implements OnInit {
+  private produtoService = inject(ProdutoService);
+  private mesaService = inject(MesaService);
+  private vendaService = inject(VendaService);
+  private itemVendaService = inject(ItemVendaService);
+  protected authService = inject(AuthService);
 
-  categorias = ['Todos', 'Lanches', 'Acompanhamentos', 'Bebidas'];
+  cliente = '';
+  mesaSelecionada: number | null = null;
+
+  produtos: Produto[] = [];
+  mesas: Mesa[] = [];
+
+  categorias: string[] = ['Todos'];
   categoriaSelecionada = 'Todos';
 
-  produtos = [
-    {
-      nome: 'Hambúrguer Clássico',
-      preco: 22,
-      categoria: 'Lanches',
-      emoji: '🍔',
-      descricao: 'Hambúrguer tradicional artesanal.',
-      ingredientes: [
-        'Pão brioche',
-        'Hambúrguer bovino',
-        'Queijo cheddar',
-        'Alface',
-        'Tomate',
-        'Molho especial'
-      ]
-    },
+  carregando = true;
+  enviando = false;
+  erro: string | null = null;
+  sucesso = false;
 
-    {
-      nome: 'X-Bacon',
-      preco: 28,
-      categoria: 'Lanches',
-      emoji: '🥓',
-      descricao: 'Hambúrguer com bastante bacon crocante.',
-      ingredientes: [
-        'Pão brioche',
-        'Hambúrguer bovino',
-        'Bacon crocante',
-        'Queijo cheddar',
-        'Molho barbecue'
-      ]
-    },
+  carrinho: ItemCarrinho[] = [];
+  produtoSelecionado: Produto | null = null;
 
-    {
-      nome: 'X-Salada',
-      preco: 25,
-      categoria: 'Lanches',
-      emoji: '🥗',
-      descricao: 'Lanche leve com salada fresca.',
-      ingredientes: [
-        'Pão brioche',
-        'Hambúrguer bovino',
-        'Queijo',
-        'Alface',
-        'Tomate',
-        'Cebola roxa',
-        'Molho verde'
-      ]
-    },
+  get usaMesa(): boolean {
+    return this.authService.temFuncionalidade('OPERACAO');
+  }
 
-    {
-      nome: 'Hot Dog',
-      preco: 15,
-      categoria: 'Lanches',
-      emoji: '🌭',
-      descricao: 'Cachorro-quente completo.',
-      ingredientes: [
-        'Pão',
-        'Salsicha',
-        'Batata palha',
-        'Milho',
-        'Molho de tomate',
-        'Maionese'
-      ]
-    },
+  ngOnInit() {
+    this.produtoService.listar().subscribe({
+      next: (produtos) => {
+        this.produtos = produtos.filter((p) => p.flAtivo !== false);
+        const nomesCategorias = new Set(
+          this.produtos.map((p) => p.categoria?.nome).filter((nome): nome is string => !!nome),
+        );
+        this.categorias = ['Todos', ...nomesCategorias];
+        this.carregando = false;
+      },
+      error: () => {
+        this.erro = 'Não foi possível carregar os produtos.';
+        this.carregando = false;
+      },
+    });
 
-    {
-      nome: 'Batata Frita',
-      preco: 12,
-      categoria: 'Acompanhamentos',
-      emoji: '🍟',
-      descricao: 'Batatas fritas crocantes.',
-      ingredientes: [
-        'Batata',
-        'Sal',
-        'Molho opcional'
-      ]
-    },
-
-    {
-      nome: 'Onion Rings',
-      preco: 14,
-      categoria: 'Acompanhamentos',
-      emoji: '🧅',
-      descricao: 'Anéis de cebola empanados.',
-      ingredientes: [
-        'Cebola',
-        'Farinha crocante',
-        'Tempero especial'
-      ]
-    },
-
-    {
-      nome: 'Nuggets',
-      preco: 16,
-      categoria: 'Acompanhamentos',
-      emoji: '🍗',
-      descricao: 'Nuggets de frango empanados.',
-      ingredientes: [
-        'Frango',
-        'Empanado crocante',
-        'Molho especial'
-      ]
-    },
-
-    {
-      nome: 'Coca-Cola',
-      preco: 7,
-      categoria: 'Bebidas',
-      emoji: '🥤',
-      descricao: 'Refrigerante gelado.',
-      ingredientes: [
-        '350ml'
-      ]
-    },
-
-    {
-      nome: 'Guaraná',
-      preco: 7,
-      categoria: 'Bebidas',
-      emoji: '🧃',
-      descricao: 'Refrigerante sabor guaraná.',
-      ingredientes: [
-        '350ml'
-      ]
-    },
-
-    {
-      nome: 'Água',
-      preco: 4,
-      categoria: 'Bebidas',
-      emoji: '💧',
-      descricao: 'Água mineral sem gás.',
-      ingredientes: [
-        '500ml'
-      ]
-    },
-
-    {
-      nome: 'Suco Natural',
-      preco: 10,
-      categoria: 'Bebidas',
-      emoji: '🍊',
-      descricao: 'Suco natural feito na hora.',
-      ingredientes: [
-        'Fruta natural',
-        'Gelo',
-        'Açúcar opcional'
-      ]
-    },
-
-    {
-      nome: 'Milk Shake',
-      preco: 18,
-      categoria: 'Bebidas',
-      emoji: '🥛',
-      descricao: 'Milk shake cremoso e gelado.',
-      ingredientes: [
-        'Sorvete',
-        'Leite',
-        'Cobertura',
-        'Chantilly'
-      ]
+    if (this.usaMesa) {
+      this.mesaService.listar().subscribe((mesas) => (this.mesas = mesas));
     }
-  ];
-
-  carrinho: any[] = [];
-  produtoSelecionado: any = null;
-
-  protected acessarRota(rota: string) {
-    this.router.navigate([rota]);
   }
 
   selecionarCategoria(cat: string) {
     this.categoriaSelecionada = cat;
   }
 
-  produtosFiltrados() {
-    if (this.categoriaSelecionada === 'Todos') return this.produtos;
-    return this.produtos.filter((p) => p.categoria === this.categoriaSelecionada);
+  iconeCategoria(nomeCategoria?: string | null): string {
+    if (!nomeCategoria) return 'bi-basket3';
+    return ICONE_POR_CATEGORIA[nomeCategoria] ?? 'bi-basket3';
   }
 
-  adicionarAoCarrinho(produto: any) {
-    const itemExistente = this.carrinho.find((p) => p.nome === produto.nome);
+  produtosFiltrados(): Produto[] {
+    if (this.categoriaSelecionada === 'Todos') return this.produtos;
+    return this.produtos.filter((p) => p.categoria?.nome === this.categoriaSelecionada);
+  }
+
+  adicionarAoCarrinho(produto: Produto) {
+    const itemExistente = this.carrinho.find((item) => item.produto.id === produto.id);
 
     if (itemExistente) {
       itemExistente.qtd++;
     } else {
-      this.carrinho.push({ ...produto, qtd: 1 });
+      this.carrinho.push({ produto, qtd: 1 });
     }
   }
 
@@ -222,24 +112,80 @@ export class NovoPedido {
     }
   }
 
-  total() {
-    return this.carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
+  total(): number {
+    return this.carrinho.reduce((soma, item) => soma + item.produto.preco * item.qtd, 0);
+  }
+
+  podeFinalizar(): boolean {
+    if (this.carrinho.length === 0) return false;
+    return this.usaMesa ? this.mesaSelecionada !== null || !!this.cliente.trim() : true;
   }
 
   confirmarPedido() {
-    console.log('Pedido:', this.carrinho);
-    this.carrinho = [];
-    this.cliente = '';
-    this.acessarRota('/confirmar-pedido');
+    if (!this.podeFinalizar() || this.enviando) {
+      return;
+    }
 
+    const usuarioId = this.authService.usuario()?.id;
+    if (!usuarioId) {
+      this.erro = 'Sessão inválida, faça login novamente.';
+      return;
+    }
+
+    this.enviando = true;
+    this.erro = null;
+
+    const mesa = this.usaMesa && this.mesaSelecionada ? { id: this.mesaSelecionada } : null;
+
+    this.vendaService
+      .criar({
+        status: STATUS_PEDIDO.AGUARDANDO,
+        tipo: mesa ? 'Mesa' : 'Balcão',
+        mesa,
+        nomeCliente: this.cliente.trim() || null,
+        usuario: { id: usuarioId },
+      })
+      .subscribe({
+        next: (venda) => this.enviarItens(venda.id),
+        error: () => {
+          this.enviando = false;
+          this.erro = 'Não foi possível criar o pedido. Tente novamente.';
+        },
+      });
   }
-  modalAberto = false;
 
-  abrirDetalhes(produto: any) {
+  private enviarItens(vendaId: number) {
+    const chamadas = this.carrinho.map((item) =>
+      this.itemVendaService.criar({
+        venda: { id: vendaId },
+        produto: { id: item.produto.id },
+        quantidade: item.qtd,
+        preco_unitario: item.produto.preco,
+        valor_total: item.produto.preco * item.qtd,
+      }),
+    );
+
+    forkJoin(chamadas).subscribe({
+      next: () => {
+        this.enviando = false;
+        this.sucesso = true;
+        this.carrinho = [];
+        this.cliente = '';
+        this.mesaSelecionada = null;
+        setTimeout(() => (this.sucesso = false), 4000);
+      },
+      error: () => {
+        this.enviando = false;
+        this.erro = 'O pedido foi criado, mas houve um problema ao salvar os itens.';
+      },
+    });
+  }
+
+  abrirDetalhes(produto: Produto) {
     this.produtoSelecionado = produto;
   }
 
   fecharModal() {
-  this.produtoSelecionado = null;
-}
+    this.produtoSelecionado = null;
+  }
 }
