@@ -19,6 +19,38 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Transição suave entre rotas (ex.: Entrar <-> Cadastrar), via View Transitions API do Router */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(root) {
+  animation-name: easyeats-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: easyeats-fade-in;
+}
+
+@keyframes easyeats-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes easyeats-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 //container padrão
 .container-padrao {
   width: 100%;
@@ -105,4 +137,104 @@ body {
 .status.entregue {
   background: #e8eaf6;
   color: #3f51b5;
+}
+
+/* ==========================================================================
+   MODO NOTURNO
+   Sobrescreve, de forma centralizada, as classes do design system usadas em
+   todas as telas (.painel, .stat-card, .card-form, etc.) — evita ter que
+   duplicar regras de tema em cada componente.
+   ========================================================================== */
+
+:root[data-theme='escuro'] {
+  color-scheme: dark;
+}
+
+html[data-theme='escuro'] body {
+  background: #14161a;
+}
+
+html[data-theme='escuro'] .painel,
+html[data-theme='escuro'] .stat-card,
+html[data-theme='escuro'] .card-form,
+html[data-theme='escuro'] .resumo-card,
+html[data-theme='escuro'] .auth-card,
+html[data-theme='escuro'] .produto-card,
+html[data-theme='escuro'] .card-pedido,
+html[data-theme='escuro'] .cartao,
+html[data-theme='escuro'] .carrinho,
+html[data-theme='escuro'] .profile-card {
+  background: #1c1f26 !important;
+  border-color: #2b2f38 !important;
+}
+
+html[data-theme='escuro'] .pagina,
+html[data-theme='escuro'] .page-container {
+  color: #e5e7eb;
+}
+
+html[data-theme='escuro'] .topo h1,
+html[data-theme='escuro'] .painel h3,
+html[data-theme='escuro'] .stat-valor,
+html[data-theme='escuro'] .cabecalho-form h2,
+html[data-theme='escuro'] .info strong,
+html[data-theme='escuro'] .value,
+html[data-theme='escuro'] h1,
+html[data-theme='escuro'] h2,
+html[data-theme='escuro'] h3,
+html[data-theme='escuro'] h4 {
+  color: #f3f4f6 !important;
+}
+
+html[data-theme='escuro'] .topo p,
+html[data-theme='escuro'] .stat-label,
+html[data-theme='escuro'] .painel p,
+html[data-theme='escuro'] .label-title,
+html[data-theme='escuro'] .nome,
+html[data-theme='escuro'] .descricao {
+  color: #9ca3af !important;
+}
+
+html[data-theme='escuro'] .linha,
+html[data-theme='escuro'] .item,
+html[data-theme='escuro'] .info-item {
+  border-color: #2b2f38 !important;
+}
+
+html[data-theme='escuro'] .campo input,
+html[data-theme='escuro'] .campo select,
+html[data-theme='escuro'] .input-icone input,
+html[data-theme='escuro'] .input-busca,
+html[data-theme='escuro'] .barra-filtros select,
+html[data-theme='escuro'] input.input-edicao-discreto {
+  background: #14161a !important;
+  border-color: #2b2f38 !important;
+  color: #e5e7eb !important;
+}
+
+html[data-theme='escuro'] .tabela thead th {
+  color: #6b7280 !important;
+  border-bottom-color: #2b2f38 !important;
+}
+
+html[data-theme='escuro'] .tabela tbody td {
+  border-bottom-color: #2b2f38 !important;
+  color: #d1d5db;
+}
+
+html[data-theme='escuro'] .tabela tbody tr:hover {
+  background: #23262d !important;
+}
+
+html[data-theme='escuro'] .celula-nome {
+  color: #f3f4f6 !important;
+}
+
+html[data-theme='escuro'] .filtros button,
+html[data-theme='escuro'] .btn-cancelar,
+html[data-theme='escuro'] .btn-icone,
+html[data-theme='escuro'] .btn-voltar {
+  background: #1c1f26 !important;
+  border-color: #2b2f38 !important;
+  color: #9ca3af !important;
 }

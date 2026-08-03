@@ -1,141 +1,136 @@
-<div class="dashboard">
+<div class="pagina">
+  <header class="topo">
+    <h1>Dashboard</h1>
+    <p>Visão geral em tempo real da sua operação</p>
+  </header>
 
-  <!-- HERO -->
-  <div class="hero">
-
-    <div class="hero-top">
-      <span class="live-badge">
-        🔥 Boa noite!
-      </span>
-    </div>
-
-    <h1>Painel</h1>
-
-    <p>
-      sábado, 21 de março
-    </p>
-
-    <div class="hero-info">
-      <div>
-        <strong>12</strong>
-        <span>Pedidos hoje</span>
-      </div>
-
-      <div>
-        <strong>R$ 178</strong>
-        <span>Faturamento</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CARDS -->
-  <div class="grid">
-
-    <div class="card faturamento">
-      <div class="icon">💰</div>
-
-      <div>
-        <div class="valor">R$ 178.00</div>
-        <div class="paragrafo">Faturamento</div>
-      </div>
-    </div>
-
-    <div class="card pedidos">
-      <div class="icon">📦</div>
-
-      <div>
-        <div class="valor">3</div>
-        <div class="paragrafo">Pedidos Hoje</div>
-      </div>
-    </div>
-
-    <div class="card preparo">
-      <div class="icon">🔥</div>
-
-      <div>
-        <div class="valor">2</div>
-        <div class="paragrafo">Em Preparo</div>
-      </div>
-    </div>
-
-    <div class="card ticket">
-      <div class="icon">📈</div>
-
-      <div>
-        <div class="valor">R$ 59.33</div>
-        <div class="paragrafo">Ticket Médio</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CTA -->
-  <button class="btn" (click)="acessarRota('/novo-pedido')">
-    + Novo Pedido
-  </button>
-
-  <!-- LISTA -->
-  <div class="lista">
-
-    <div class="lista-header">
-      <h3>Últimos Pedidos</h3>
-
-      <span>Hoje</span>
-    </div>
-
-    <div class="item">
-
-      <div class="pedido-info">
-
-        <div class="avatar">
-          J
+    <!-- CARDS PRINCIPAIS -->
+    <div class="grid-stats">
+      @for (stat of statsPrincipais; track stat.label) {
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" [ngClass]="stat.cor">
+              <i class="bi" [ngClass]="stat.icon"></i>
+            </div>
+            <span class="variacao">
+              <i class="bi bi-arrow-up-short"></i>{{ stat.variacao }}
+            </span>
+          </div>
+          <div class="stat-valor">{{ stat.valor }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
         </div>
-
-        <div>
-          <strong>#001 João</strong>
-          <p>Pedido realizado às 18:42</p>
-        </div>
-
-      </div>
-
-      <div class="pedido-right">
-        <strong>R$ 70.00</strong>
-
-        <span class="status preparando">
-          preparando
-        </span>
-      </div>
-
+      }
     </div>
 
-    <div class="item">
-
-      <div class="pedido-info">
-
-        <div class="avatar maria">
-          M
+    <!-- CARDS OPERACIONAIS -->
+    <div class="grid-stats grid-stats--compacto">
+      @for (stat of statsOperacionais; track stat.label) {
+        <div class="stat-card stat-card--compacto">
+          <div class="stat-icon" [ngClass]="stat.cor">
+            <i class="bi" [ngClass]="stat.icon"></i>
+          </div>
+          <div>
+            <div class="stat-valor stat-valor--sm">{{ stat.valor }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
         </div>
-
-        <div>
-          <strong>#002 Maria</strong>
-          <p>Pedido realizado às 18:57</p>
-        </div>
-
-      </div>
-
-      <div class="pedido-right">
-        <strong>R$ 42.00</strong>
-
-        <span class="status pronto">
-          pronto
-        </span>
-      </div>
-
+      }
     </div>
 
-  </div>
+    <!-- GRÁFICO + PAGAMENTOS -->
+    <div class="grid-duas-colunas">
+      <section class="painel">
+        <h3>Vendas da Semana</h3>
 
-  <app-navbar></app-navbar>
+        <svg class="grafico" viewBox="0 0 700 210" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="gradienteArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f97316" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="#f97316" stop-opacity="0" />
+            </linearGradient>
+          </defs>
 
+          <!-- linhas de grade -->
+          @for (linha of [0, 1, 2, 3]; track linha) {
+            <line
+              x1="0"
+              [attr.y1]="linha * 45"
+              x2="700"
+              [attr.y2]="linha * 45"
+              stroke="#eef0f2"
+              stroke-width="1"
+            />
+          }
+
+          <path [attr.d]="areaFillPath" fill="url(#gradienteArea)" />
+          <path [attr.d]="areaPath" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round" />
+
+          @for (ponto of vendasSemana; track ponto.dia; let i = $index) {
+            <circle [attr.cx]="pontoX(i)" [attr.cy]="pontoY(ponto.valor)" r="4" fill="#f97316" />
+          }
+        </svg>
+
+        <div class="eixo-x">
+          @for (ponto of vendasSemana; track ponto.dia) {
+            <span>{{ ponto.dia }}</span>
+          }
+        </div>
+      </section>
+
+      <section class="painel">
+        <h3>Formas de Pagamento</h3>
+
+        <ul class="lista-pagamentos">
+          @for (forma of formasPagamento; track forma.nome) {
+            <li>
+              <span class="ponto" [style.background]="forma.cor"></span>
+              <span class="nome">{{ forma.nome }}</span>
+              <span class="valor">R$ {{ forma.valor.toFixed(2) }}</span>
+            </li>
+          }
+        </ul>
+
+        <div class="barra-proporcao">
+          @for (forma of formasPagamento; track forma.nome) {
+            <span
+              [style.background]="forma.cor"
+              [style.width.%]="(forma.valor / totalFormasPagamento) * 100"
+            ></span>
+          }
+        </div>
+      </section>
+    </div>
+
+    <!-- PRODUTOS + HORÁRIO -->
+    <div class="grid-duas-colunas">
+      <section class="painel">
+        <h3>Produtos Mais Vendidos</h3>
+
+        <ul class="lista-ranking">
+          @for (produto of produtosMaisVendidos; track produto.nome; let i = $index) {
+            <li>
+              <span class="posicao">{{ i + 1 }}º</span>
+              <span class="nome">{{ produto.nome }}</span>
+              <span class="qtd">{{ produto.quantidade }} un.</span>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="painel">
+        <h3>Horário de Maior Movimento</h3>
+
+        <div class="barras-horario">
+          @for (ponto of horarioMovimento; track ponto.hora) {
+            <div class="barra-item">
+              <div
+                class="barra"
+                [style.height.%]="(ponto.pedidos / maiorPedidosHorario) * 100"
+              ></div>
+              <span>{{ ponto.hora }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
 </div>

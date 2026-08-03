@@ -20,14 +20,14 @@
           <div class="label-group">
             <span class="label-title">Nome: </span>
           </div>
-          <div class="value">João Silva</div>
+          <div class="value">{{ usuario?.nome }}</div>
         </div>
 
         <div class="info-item">
           <div class="label-group">
             <span class="label-title">Email: </span>
           </div>
-          <div class="value">JoãoSilva@gmail.com</div>
+          <div class="value">{{ usuario?.email }}</div>
         </div>
 
         <div class="info-item">
@@ -48,38 +48,11 @@
       <div class="admin-actions">
         <div class="button-row footer-actions">
           <button type="button" class="btn-padrao">Editar Perfil</button>
-          <button
-            type="button"
-            class="btn-red-outline"
-            routerLink="/login"
-            routerLinkActive="active"
-          >
+          <button type="button" class="btn-red-outline" (click)="sair()">
             Sair da Conta
           </button>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Menu inferior com ícones -->
-<div class="bottom-nav">
-  <button type="button">
-    <i class="bi bi-cart"></i>
-    <span>Pedido</span>
-  </button>
-
-  <button type="button">
-    <i class="bi bi-list-task"></i>
-    <span>Fila</span>
-  </button>
-
-  <button type="button">
-    <i class="bi bi-clock-history"></i>
-    <span>Histórico</span>
-  </button>
-
-  <button type="button" routerLink="/perfil-admin" routerLinkActive="active">
-    <i class="bi bi-person-circle"></i>
-    <span>Perfil</span>
-  </button>
 </div>

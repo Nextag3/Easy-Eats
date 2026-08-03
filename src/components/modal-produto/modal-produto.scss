@@ -1,3 +1,5 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+
 /* Fundo escuro atrás do modal */
 .modal-overlay {
   position: fixed;
@@ -18,10 +20,10 @@
   background: white;
   width: 90%;
   max-width: 380px;
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 24px;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   animation: slideUp 0.3s ease-out;
 }
 
@@ -49,7 +51,7 @@
 }
 
 .btn-fechar:hover {
-  background: #ff6b00;
+  background: #ea580c;
   color: white;
 }
 
@@ -64,9 +66,20 @@
   margin-bottom: 15px;
 }
 
-.emoji-grande {
-  font-size: 60px;
-  margin-bottom: 10px;
+.icone-grande {
+  width: 76px;
+  height: 76px;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #fff7ed;
+  color: #ea580c;
+  font-size: 34px;
+
+  margin-bottom: 14px;
 }
 
 .modal-header h3 {
@@ -76,7 +89,7 @@
 }
 
 .preco-destaque {
-  color: #ff6b00;
+  color: #ea580c;
   font-size: 18px;
   font-weight: bold;
 }
@@ -94,7 +107,7 @@
 .btn-adicionar {
   width: 100%;
   padding: 14px;
-  background: #ff6b00;
+  background: #ea580c;
   color: white;
   border: none;
   border-radius: 10px;

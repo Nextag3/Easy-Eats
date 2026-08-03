@@ -1,0 +1,44 @@
+<div class="pagina">
+  <header class="topo">
+    <h1>Comandas</h1>
+    <p>Acompanhe as comandas abertas e o valor consumido por mesa</p>
+  </header>
+
+  <div class="grid-stats">
+    <div class="stat-card">
+      <div class="stat-label">Comandas Abertas</div>
+      <div class="stat-valor">{{ comandasAbertas }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Valor Total em Aberto</div>
+      <div class="stat-valor">{{ valorTotalEmAberto | currency: 'BRL' }}</div>
+    </div>
+  </div>
+
+  <section class="painel">
+    <h3>Comandas</h3>
+
+    <div class="lista">
+      @for (comanda of comandas; track comanda.id) {
+        <div class="linha">
+          <div class="info">
+            <strong>Mesa {{ comanda.mesa }} - {{ comanda.cliente }}</strong>
+            <span>{{ comanda.quantidadeItens }} itens · {{ comanda.valorAcumulado | currency: 'BRL' }}</span>
+          </div>
+
+          <div class="direita">
+            <span class="badge" [ngClass]="badgeClasse(comanda.status)">{{ comanda.status }}</span>
+            @if (comanda.status === 'Aberta') {
+              <button type="button" class="btn-fechar" (click)="fecharComanda(comanda)">
+                <i class="bi bi-check2-circle"></i>
+                Fechar Comanda
+              </button>
+            }
+          </div>
+        </div>
+      } @empty {
+        <p class="vazio">Nenhuma comanda registrada.</p>
+      }
+    </div>
+  </section>
+</div>

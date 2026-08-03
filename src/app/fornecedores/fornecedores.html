@@ -1,0 +1,75 @@
+<div class="pagina">
+  <header class="topo">
+    <h1>Fornecedores</h1>
+    <p>Cadastre e gerencie os fornecedores do estabelecimento</p>
+  </header>
+
+  <div class="grid-duas-colunas">
+    <section class="painel">
+      <h3>{{ editandoId !== null ? 'Editar Fornecedor' : 'Novo Fornecedor' }}</h3>
+
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <div class="campo">
+          <label>Nome</label>
+          <input type="text" placeholder="Ex: Frigorífico Boa Carne" formControlName="nome" />
+          @if (form.get('nome')?.touched && form.get('nome')?.errors?.['required']) {
+            <small class="erro">Nome é obrigatório.</small>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Telefone / Contato</label>
+          <input type="text" placeholder="Ex: (11) 98765-4321" formControlName="contato" />
+          @if (form.get('contato')?.touched && form.get('contato')?.errors?.['required']) {
+            <small class="erro">Contato é obrigatório.</small>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Categoria de Fornecimento</label>
+          <input type="text" placeholder="Ex: Carnes, Bebidas, Embalagens" formControlName="categoria" />
+          @if (form.get('categoria')?.touched && form.get('categoria')?.errors?.['required']) {
+            <small class="erro">Categoria é obrigatória.</small>
+          }
+        </div>
+
+        <div class="acoes-form">
+          <button type="submit" class="btn-salvar">
+            {{ editandoId !== null ? 'Salvar Alterações' : 'Adicionar Fornecedor' }}
+          </button>
+
+          @if (editandoId !== null) {
+            <button type="button" class="btn-cancelar" (click)="cancelarEdicao()">Cancelar</button>
+          }
+        </div>
+      </form>
+    </section>
+
+    <section class="painel">
+      <h3>Fornecedores Cadastrados</h3>
+
+      <div class="lista">
+        @for (fornecedor of fornecedores; track fornecedor.id) {
+          <div class="linha">
+            <div class="info">
+              <strong>{{ fornecedor.nome }}</strong>
+              <span>{{ fornecedor.contato }}</span>
+            </div>
+
+            <div class="direita">
+              <span class="badge neutro">{{ fornecedor.categoria }}</span>
+              <button type="button" class="btn-icone" (click)="editar(fornecedor)" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button type="button" class="btn-icone" (click)="excluir(fornecedor)" title="Excluir">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <p class="vazio">Nenhum fornecedor cadastrado.</p>
+        }
+      </div>
+    </section>
+  </div>
+</div>

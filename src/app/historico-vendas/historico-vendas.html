@@ -1,71 +1,72 @@
-<div class="container-padrao">
-  <h2 class="titulo-padrao">Histórico de Vendas</h2>
+<div class="pagina">
+  <header class="topo">
+    <h1>Histórico de Vendas</h1>
+    <p>Consulte os pedidos realizados e filtre por status</p>
+  </header>
 
-  <div class="cards">
-    <div class="card kpi">
-      <div class="icon">$</div>
+  <div class="grid-resumo">
+    <div class="resumo-card">
+      <div class="resumo-icon verde"><i class="bi bi-cash-stack"></i></div>
       <div>
-        <span class="valor">Valor total</span>
-        <small class="valor-numero">
-          R$ {{ totalFiltrado.toFixed(2) }}
-        </small>
+        <div class="resumo-valor">R$ {{ totalFiltrado.toFixed(2) }}</div>
+        <div class="resumo-label">Valor total</div>
       </div>
     </div>
 
-    <div class="card kpi">
-      <div class="icon">🧾</div>
+    <div class="resumo-card">
+      <div class="resumo-icon azul"><i class="bi bi-receipt"></i></div>
       <div>
-        <span class="valor">Pedidos</span>
-        <small class="valor-numero">
-          {{ totalPedidos }}
-        </small>
+        <div class="resumo-valor">{{ totalPedidos }}</div>
+        <div class="resumo-label">Pedidos</div>
       </div>
     </div>
   </div>
 
-  <input
-    type="text"
-    placeholder="Buscar por nome ou #pedido"
-    class="input-busca"
-    [(ngModel)]="busca"
-  />
+  <section class="painel">
+    <input
+      type="text"
+      placeholder="Buscar por nome ou #pedido"
+      class="input-busca"
+      [(ngModel)]="busca"
+    />
 
-  <div class="filtros">
-    @for (filtro of filtros; track filtro) {
-      <button
-        [class.ativo]="filtroSelecionado === filtro"
-        (click)="selecionarFiltro(filtro)"
-      >
-        {{ filtro }}
-      </button>
-    }
-  </div>
+    <div class="filtros">
+      @for (filtro of filtros; track filtro) {
+        <button
+          [class.ativo]="filtroSelecionado === filtro"
+          (click)="selecionarFiltro(filtro)"
+        >
+          {{ filtro }}
+        </button>
+      }
+    </div>
 
-  <div class="lista">
-    @for (pedido of pedidosFiltrados; track pedido.id) {
-      <div class="card pedido">
-        <div class="top">
-          <strong>#{{ pedido.id }} {{ pedido.cliente }}</strong>
-          <span class="status {{ pedido.status }}">
-            {{ pedido.status }}
-          </span>
+    <div class="lista">
+      @for (pedido of pedidosFiltrados; track pedido.id) {
+        <div class="card-pedido">
+          <div class="top">
+            <strong>#{{ pedido.id }} {{ pedido.cliente }}</strong>
+            <span class="status {{ pedido.status }}">
+              {{ pedido.status }}
+            </span>
+          </div>
+
+          <div class="itens">
+            @for (item of pedido.itens; track $index) {
+              <p>{{ item.nome }} x{{ item.quantidade }}</p>
+            }
+          </div>
+
+          <div class="footer">
+            <span>{{ pedido.horario }}</span>
+            <strong class="valor-pedido">
+              R$ {{ pedido.total.toFixed(2) }}
+            </strong>
+          </div>
         </div>
-
-        <div class="itens">
-          @for (item of pedido.itens; track $index) {
-            <p>{{ item.nome }} x{{ item.quantidade }}</p>
-          }
-        </div>
-
-        <div class="footer">
-          <span>{{ pedido.horario }}</span>
-          <strong class="valor-pedido">
-            R$ {{ pedido.total.toFixed(2) }}
-          </strong>
-        </div>
-      </div>
-    }
-
-    <app-navbar></app-navbar>
-  </div>
+      } @empty {
+        <p class="vazio">Nenhum pedido encontrado.</p>
+      }
+    </div>
+  </section>
 </div>

@@ -18,10 +18,10 @@
   background: white;
   width: 90%;
   max-width: 350px; /* Um pouco mais enxuto por ser apenas um aviso */
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 30px 24px;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   animation: slideUp 0.3s ease-out;
   text-align: center;
 }

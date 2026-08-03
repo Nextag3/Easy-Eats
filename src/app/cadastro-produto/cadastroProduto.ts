@@ -1,8 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Navbar } from '../../components/navbar';
-import { Router } from '@angular/router';
 import { ModalCadastroProduto } from '../../components/modal-cadastro-produto/modal-cadastro-produto';
 
 @Component({
@@ -13,12 +11,7 @@ import { ModalCadastroProduto } from '../../components/modal-cadastro-produto/mo
   styleUrls: ['./cadastroProduto.scss'],
 })
 export class CadastroProdutoComponent {
-  private router = inject(Router);
   currentYear = new Date().getFullYear();
-
-  protected acessarRota(rota: string) {
-    this.router.navigate([rota]);
-  }
 
   form = new FormGroup({
     nome: new FormControl('', Validators.required),
@@ -31,10 +24,7 @@ export class CadastroProdutoComponent {
 
   abrirModalConfirmacao() {
     if (this.form.valid) {
-      this.produtoParaConfirmar = {
-        ...this.form.value,
-        emoji: '📦',
-      };
+      this.produtoParaConfirmar = { ...this.form.value };
     } else {
       alert('Preencha todos os campos corretamente!');
     }

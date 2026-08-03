@@ -1,0 +1,71 @@
+<div class="pagina">
+  <header class="topo">
+    <h1>Usuários</h1>
+    <p>Gerencie os usuários com acesso ao sistema</p>
+  </header>
+
+  <div class="grid-duas-colunas">
+    <section class="painel">
+      <h3>Novo Usuário</h3>
+
+      <form [formGroup]="form" (ngSubmit)="adicionar()">
+        <div class="campo">
+          <label>Nome</label>
+          <input type="text" placeholder="Ex: Maria da Silva" formControlName="nome" />
+          @if (form.get('nome')?.touched && form.get('nome')?.errors?.['required']) {
+            <small class="erro">Nome é obrigatório.</small>
+          }
+        </div>
+
+        <div class="campo">
+          <label>E-mail</label>
+          <input type="email" placeholder="Ex: maria@easyeats.com" formControlName="email" />
+          @if (form.get('email')?.touched && form.get('email')?.errors?.['required']) {
+            <small class="erro">E-mail é obrigatório.</small>
+          }
+          @if (form.get('email')?.touched && form.get('email')?.errors?.['email']) {
+            <small class="erro">Informe um e-mail válido.</small>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Perfil</label>
+          <select formControlName="perfil">
+            <option value="Administrador">Administrador</option>
+            <option value="Operador">Operador</option>
+          </select>
+        </div>
+
+        <div class="acoes-form">
+          <button type="submit" class="btn-salvar">Adicionar Usuário</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="painel">
+      <h3>Usuários Cadastrados</h3>
+
+      <div class="lista">
+        @for (usuario of usuarios; track usuario.id) {
+          <div class="linha">
+            <div class="info">
+              <strong>{{ usuario.nome }}</strong>
+              <span>{{ usuario.email }}</span>
+            </div>
+
+            <div class="direita">
+              <span class="badge" [class.roxo]="usuario.perfil === 'Administrador'" [class.azul]="usuario.perfil === 'Operador'">
+                {{ usuario.perfil }}
+              </span>
+              <span class="badge" [class.sucesso]="usuario.status === 'Ativo'" [class.neutro]="usuario.status === 'Inativo'">
+                {{ usuario.status }}
+              </span>
+            </div>
+          </div>
+        } @empty {
+          <p class="vazio">Nenhum usuário cadastrado.</p>
+        }
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,7 +1,11 @@
-<div class="page-container">
-  <div class="header-section">
-    <h1>Confirmar Pedido</h1>
-    <button class="btn-voltar" type="button">
+<div class="pagina">
+  <div class="topo-acao">
+    <header class="topo">
+      <h1>Confirmar Pedido</h1>
+      <p>Revise o pedido antes de enviar para a cozinha</p>
+    </header>
+
+    <button class="btn-voltar" type="button" (click)="acessarRota('/novo-pedido')">
       <i class="bi bi-arrow-left"></i> Voltar
     </button>
   </div>
@@ -10,7 +14,7 @@
     <section class="resumo">
       <div class="titulo">Resumo do Pedido</div>
       <div class="item-resumo">
-        <span>🥤 Coca-Cola x1</span>
+        <span><i class="bi bi-cup-straw"></i> Coca-Cola x1</span>
         <span>R$ 7,00</span>
       </div>
       <div class="total">

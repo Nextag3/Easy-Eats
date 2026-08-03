@@ -18,7 +18,7 @@
       <div class="profile-card info-section">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h3 class="m-0">Informações de Cadastro</h3>
-          <button (click)="modoEdicao = !modoEdicao" style="background:none; border:none; color:#ff6b00; cursor:pointer;">
+          <button (click)="modoEdicao = !modoEdicao" class="btn-canetinha-corpo">
             <i [class]="modoEdicao ? 'bi bi-check-lg' : 'bi bi-pencil-square'"></i>
           </button>
         </div>
@@ -68,11 +68,11 @@
 
         <div class="button-row">
           <button type="button" class="btn-padrao" (click)="acessarRota('/cadastro-produto')">Produtos</button>
-          <button type="button" class="btn-padrao" (click)="acessarRota('/cadastro')">Cadastrar Garçom</button>
+          <button type="button" class="btn-padrao" (click)="acessarRota('/usuarios')">Usuários</button>
         </div>
 
         <div class="d-flex justify-content-center mt-2">
-          <button type="button" class="btn-red-outline" style="max-width: 300px;" routerLink="/login">
+          <button type="button" class="btn-red-outline" style="max-width: 300px;" (click)="sair()">
             Sair da Conta
           </button>
         </div>
@@ -80,4 +80,3 @@
     </div>
   </div>
 </div>
-<app-navbar></app-navbar>

@@ -1,12 +1,9 @@
 <div class="page-container">
 
-  <div class="header-section">
+  <header class="topo">
     <h1>Financeiro</h1>
-    
-    <div class="acoes-header">
-      <button class="btn-voltar" (click)="acessarRota('/perfil-admin')">Voltar</button>
-    </div>
-  </div>
+    <p>Vendas, despesas e catálogo de produtos</p>
+  </header>
 
   <div class="filtros">
     <button 
@@ -99,10 +96,10 @@
           <div class="produto-card" [class.alerta]="isEstoqueBaixo(p)">
             
             <div class="top">
-              <span class="emoji">{{ p.emoji }}</span>
+              <span class="icone-produto"><i class="bi" [ngClass]="iconeCategoria(p.categoria)"></i></span>
               <div class="actions">
-                <span (click)="editar(p)">✏️</span>
-                <span (click)="excluir(p)">🗑️</span>
+                <button type="button" (click)="editar(p)" title="Editar"><i class="bi bi-pencil"></i></button>
+                <button type="button" (click)="excluir(p)" title="Excluir"><i class="bi bi-trash"></i></button>
               </div>
             </div>
 
