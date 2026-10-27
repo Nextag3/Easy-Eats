@@ -52,13 +52,13 @@ export class Sidebar {
         { label: 'Comandas', icon: 'bi-receipt', rota: '/comandas', cor: '#7c3aed' },
       ],
     },
-    {
-      label: 'Caixa',
-      icon: 'bi-cash-stack',
-      rota: '/caixa',
-      cor: '#16a34a',
-      funcionalidades: ['CAIXA'],
-    },
+    //{
+      //label: 'Caixa',
+      //icon: 'bi-cash-stack',
+      //rota: '/caixa',
+      //cor: '#16a34a',
+      //funcionalidades: ['CAIXA'],
+    //},
     {
       label: 'Pedido',
       icon: 'bi-cart3',
@@ -83,18 +83,18 @@ export class Sidebar {
         { label: 'Relatório da Cozinha', icon: 'bi-bar-chart-line', rota: '/relatorio-cozinha', cor: '#d97706' },
       ],
     },
-    {
-      label: 'Delivery',
-      icon: 'bi-bicycle',
-      rota: null,
-      cor: '#0891b2',
-      perfis: ['ADMINISTRADOR'],
-      funcionalidades: ['DELIVERY'],
-      filhos: [
-        { label: 'Dashboard', icon: 'bi-speedometer2', rota: '/delivery-dashboard', cor: '#0891b2' },
-        { label: 'Relatórios', icon: 'bi-bar-chart-line', rota: '/delivery-relatorios', cor: '#0891b2' },
-      ],
-    },
+   // {
+      //label: 'Delivery',
+      //icon: 'bi-bicycle',
+      //rota: null,
+      //cor: '#0891b2',
+      //perfis: ['ADMINISTRADOR'],
+      //funcionalidades: ['DELIVERY'],
+      //filhos: [
+       // { label: 'Dashboard', icon: 'bi-speedometer2', rota: '/delivery-dashboard', cor: '#0891b2' },
+     //   { label: 'Relatórios', icon: 'bi-bar-chart-line', rota: '/delivery-relatorios', cor: '#0891b2' },
+   //   ],
+   // },
     {
       label: 'Estoque',
       icon: 'bi-box-seam',
@@ -108,7 +108,7 @@ export class Sidebar {
         { label: 'Relatório de Estoque', icon: 'bi-bar-chart-line', rota: '/relatorio-estoque', cor: '#16a34a' },
       ],
     },
-    {
+   /*  {
       label: 'Compras',
       icon: 'bi-bag-check',
       rota: null,
@@ -119,7 +119,7 @@ export class Sidebar {
         { label: 'Pedidos de Compra', icon: 'bi-cart-plus', rota: '/pedidos-compra', cor: '#b45309' },
         { label: 'Fornecedores', icon: 'bi-truck', rota: '/fornecedores', cor: '#b45309' },
       ],
-    },
+    }, */
     {
       label: 'Financeiro',
       icon: 'bi-cash-coin',
