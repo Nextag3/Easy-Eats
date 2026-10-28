@@ -8,7 +8,7 @@ import { garcomAreaGuard } from './auth/garcom-area.guard';
 import { cozinheiroAreaGuard } from './auth/cozinheiro-area.guard';
 import { Home } from './home/home';
 import { DashboardComponent } from './dashboard/dashboard';
-import { ComponentFila } from './fila/component.fila';
+import { ComponentFila } from './Fila/component.fila';
 import { TelaCozinha } from './tela-cozinha/tela-cozinha';
 import { RelatorioCozinha } from './relatorio-cozinha/relatorio-cozinha';
 import { RelatorioPedidos } from './relatorio-pedidos/relatorio-pedidos';
