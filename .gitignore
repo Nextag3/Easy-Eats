@@ -42,5 +42,5 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Segredos do docker compose
-docker/.env
+# Segredos do docker compose (.env)
+.env

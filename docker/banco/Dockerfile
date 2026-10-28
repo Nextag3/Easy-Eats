@@ -4,7 +4,8 @@ FROM postgres:18-alpine
 ENV POSTGRES_DB=easy_eats \
     TZ=America/Sao_Paulo
 
-# Scripts executados só na primeira subida, com o volume de dados vazio.
+# Scripts executados em ordem (01-schema, 02-timezone) só na primeira subida,
+# com o volume de dados vazio.
 COPY init/ /docker-entrypoint-initdb.d/
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=10 \

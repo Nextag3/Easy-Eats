@@ -1,12 +1,13 @@
 # Easy Eats completo: banco, backend e frontend, cada um com sua imagem.
-# Como usar: veja docker/README.md.
+# Uso: veja o README.md. Na raiz deste repositório:
+#   docker compose up -d --build
 
 name: easy-eats
 
 services:
   banco:
     image: ${DOCKERHUB_USER:-local}/easy-eats-banco:${TAG:-latest}
-    build: ./banco
+    build: ./docker/banco
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
@@ -14,20 +15,23 @@ services:
       # A partir do Postgres 18 os dados ficam em /var/lib/postgresql/<versão>,
       # por isso o volume é montado um nível acima de .../data.
       - banco-dados:/var/lib/postgresql
+    networks:
+      - rede-backend
     restart: unless-stopped
 
   backend:
     image: ${DOCKERHUB_USER:-local}/easy-eats-backend:${TAG:-latest}
     build:
-      context: ./backend
+      context: ./docker/backend
       additional_contexts:
         # Código da API: o repositório Easy-Eats-Api clonado ao lado deste.
-        api: ${API_PATH:-../../Easy-Eats-Api}
+        api: ${API_PATH:-../Easy-Eats-Api}
     environment:
+      # "banco" é o nome do serviço acima, resolvido pelo DNS da rede Docker.
       DB_URL: jdbc:postgresql://banco:5432/easy_eats
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET em docker/.env (veja .env.example)}
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET no arquivo .env (veja .env.example)}
       APP_PUBLIC_BASE_URL: http://localhost:${FRONT_PORT:-8000}
       SPRING_JPA_SHOW_SQL: "false"
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
@@ -37,20 +41,30 @@ services:
     depends_on:
       banco:
         condition: service_healthy
+    networks:
+      - rede-backend
+      - rede-frontend
     restart: unless-stopped
 
   frontend:
     image: ${DOCKERHUB_USER:-local}/easy-eats-frontend:${TAG:-latest}
     build:
-      context: ./frontend
+      context: ./docker/frontend
       additional_contexts:
         # Código do front: a raiz deste repositório.
-        app: ..
+        app: .
     ports:
       - "${FRONT_PORT:-8000}:80"
     depends_on:
       - backend
+    networks:
+      - rede-frontend
     restart: unless-stopped
+
+# O frontend só enxerga o backend; o banco só é acessível pelo backend.
+networks:
+  rede-frontend:
+  rede-backend:
 
 volumes:
   banco-dados:

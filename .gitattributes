@@ -1,2 +1,4 @@
 # Arquivos usados dentro dos containers (Linux) sempre com LF.
 docker/** text eol=lf
+docker-compose.yaml text eol=lf
+.env.example text eol=lf
