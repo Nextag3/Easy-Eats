@@ -1,0 +1,2 @@
+# Arquivos usados dentro dos containers (Linux) sempre com LF.
+docker/** text eol=lf

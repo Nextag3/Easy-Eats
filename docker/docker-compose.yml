@@ -1,0 +1,56 @@
+# Easy Eats completo: banco, backend e frontend, cada um com sua imagem.
+# Como usar: veja docker/README.md.
+
+name: easy-eats
+
+services:
+  banco:
+    image: ${DOCKERHUB_USER:-local}/easy-eats-banco:${TAG:-latest}
+    build: ./banco
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      # A partir do Postgres 18 os dados ficam em /var/lib/postgresql/<versão>,
+      # por isso o volume é montado um nível acima de .../data.
+      - banco-dados:/var/lib/postgresql
+    restart: unless-stopped
+
+  backend:
+    image: ${DOCKERHUB_USER:-local}/easy-eats-backend:${TAG:-latest}
+    build:
+      context: ./backend
+      additional_contexts:
+        # Código da API: o repositório Easy-Eats-Api clonado ao lado deste.
+        api: ${API_PATH:-../../Easy-Eats-Api}
+    environment:
+      DB_URL: jdbc:postgresql://banco:5432/easy_eats
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET em docker/.env (veja .env.example)}
+      APP_PUBLIC_BASE_URL: http://localhost:${FRONT_PORT:-8000}
+      SPRING_JPA_SHOW_SQL: "false"
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_CONNECT_CLIENT_ID: ${STRIPE_CONNECT_CLIENT_ID:-}
+    depends_on:
+      banco:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    image: ${DOCKERHUB_USER:-local}/easy-eats-frontend:${TAG:-latest}
+    build:
+      context: ./frontend
+      additional_contexts:
+        # Código do front: a raiz deste repositório.
+        app: ..
+    ports:
+      - "${FRONT_PORT:-8000}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  banco-dados:
